@@ -79,7 +79,7 @@
           >个人中心</a
         >
         <img src="images/2.jpg" alt="person" />
-        <a href="javascript:;"><i class="iconfont icon-tuichu"></i> 退出</a>
+        <a href="javascript:;" class="tuichu"><i class="iconfont icon-tuichu"></i> 退出</a>
       </div>
     </div>
 
@@ -212,23 +212,44 @@
                 - 如果点击取消，不进行跳转
       */
 
-      $('.user_center_link>a').eq(1).on('click', function () {
-        // 设置模态框进行确认(我错了，modal和confirm不一样，没有返回truefalse)
-        $('#myModal').modal();
-      });
+      // $('.user_center_link>a').eq(1).on('click', function () {
+      //   // 设置模态框进行确认(我错了，modal和confirm不一样，没有返回truefalse)
+      //   $('#myModal').modal();
+      // });
     
-      // 设置离开按钮的点击事件
-      $('.btn-leave').on('click', function () {
-        // 发送请求：
-        $.post({
-          url : 'https://autumnfish.cn/big/admin/logout',
-          success : function (res) {
-            // 直接进行跳转
-            location.href = 'login.html';
-          }
-        }); 
-      });
+      // // 设置离开按钮的点击事件
+      // $('.btn-leave').on('click', function () {
+      //   // 发送请求：
+      //   $.post({
+      //     url : 'https://autumnfish.cn/big/admin/logout',
+      //     success : function (res) {
+      //       // 直接进行跳转
+      //       location.href = 'login.html';
+      //     }
+      //   }); 
+      // });
     
+        $('.tuichu').on('click',function() {
+
+          $('#myModal').modal();
+
+        })
+        
+        $('.btn-leave').on('click',function () {
+
+          $.post({
+
+            url : 'https://autumnfish.cn/big/admin/logout',
+
+            success : function (res) {
+
+              location.href = 'login.html';
+
+            }
+
+          })
+
+        })
     
     </script>
     
