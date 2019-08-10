@@ -137,7 +137,7 @@
           url: 'https://autumnfish.cn/big/admin/userinfo_get',
           type: 'get',
           success: function(backData) {
-            // console.log(backData)
+            console.log(backData)
             // 挨个设置内容
             for (const key in backData.data) {
               $('input.' + key).val(backData.data[key])
@@ -174,6 +174,7 @@
             // 不把数据变字符串
             processData: false,
             success: function(backData) {
+
               console.log(backData)
             }
           })
