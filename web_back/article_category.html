@@ -153,6 +153,10 @@
             <button type="button" class="btn btn-primary" id="model_add">
               新增
             </button>
+
+            <button type="button" class="btn btn-primary" id="modal_edit">
+              编辑
+            </button>
           </div>
         </div>
       </div>
@@ -180,7 +184,7 @@
     <script src="./js/template-web.js"></script>
     <!-- 定义模板 -->
 
-    <script type="text/template" id="moban">
+    <script type="text/template" id="category">
       {{each ($res.data)}}
       <tr>
         <td>{{$value.name}}</td>
@@ -188,12 +192,12 @@
         <td class="text-center">
           <a
             href='javascript:editTr({"id":"4","slug":"travel","name":"爱旅行"});'
-            class="btn btn-info btn-xs"
+            class="btn btn-info btn-xs" data-id="{{$value.id}}"
             >编辑</a
           >
           <a
             href="javascript:deleteTr( 4 );"
-            class="btn btn-danger btn-xs"
+            class="btn btn-danger btn-xs" data-id="{{$value.id}}"
             >删除</a
           >
         </td>
@@ -207,6 +211,8 @@
 
 
     <script>
+
+      // 新增
     
       $.get({
         url : 'http://localhost:8000/admin/category_search',
@@ -217,7 +223,7 @@
 
           if(res.code == 200) {
 
-            $('tbody').html(template('moban',res.data))
+            $('tbody').html(template('category',res.data))
 
           }
 
@@ -252,15 +258,116 @@
 
             success : function (res) {
 
-              location.reload();
+              console.log(res)
+
+              if (res.code == 200) {
+
+                location.reload();
+
+              }
 
             }
 
 
           })
 
+      });
+
+      // 删除
+
+      $('tbody').on('click','.btn-danger',function () {
+
+          var id = $(this).data('id');
+
+          var tr = $(this).parents('tr');
+
+          $.post({
+
+            url : 'http://localhost:8000/admin/category_delete',
+
+            data : {
+
+              id : id
+
+            },
+
+            success : function (res) {
+
+              if ( res.code == 200) {
+
+                tr.remove();
+              }
+
+            }
+
+          })
       })
+
+      // 编辑
     
+      var id;
+
+        $('tbody').on('click','.btn-info', function(){
+
+           id = $(this).data('id');
+
+          $('.cate_name').val($(this).parents('tr').children('td').eq(0).text());
+
+          $('.cate_slug').val($(this).parents('tr').children('td').eq(1).text());
+
+          $('#model_add').addClass('hide');
+
+          $('#modal_edit').removeClass('hide');
+
+
+        });
+
+       $('.btn-add').on('click',function () {
+
+        $('#model_add').removeClass('hide');
+
+        $('#modal_edit').addClass('hide');
+
+
+       })
+
+        $('#modal_edit').on('click',function () {
+
+          if ( $('.cate_name').val() === '' ||  $('.cate_slug').val() ===''){
+
+            alert('请输入信息');
+
+            return;
+
+          }
+
+          $.post({
+
+            url : 'http://localhost:8000/admin/category_edit',
+
+            data : {
+
+              id : id,
+
+              name :  $('.cate_name').val(),
+
+              slug :  $('.cate_slug').val()
+
+            },
+
+            success : function (res) {
+
+              if (res.code == 200) {
+
+                location.reload();
+              }
+
+            }
+
+          })
+
+        })
+     
     </script>
   </body>
 </html>
